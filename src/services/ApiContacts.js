@@ -2,7 +2,7 @@ import axios from "axios";
 
 axios.defaults.baseURL = "https://67289583270bd0b975565579.mockapi.io/";
 
-const getAllContacts = async () => {
+const fetchContacts = async () => {
   try {
     const response = await axios.get("/contacts");
     return response.data;
@@ -12,7 +12,7 @@ const getAllContacts = async () => {
   }
 };
 
-const createContact = async (newContact) => {
+const addContact = async (newContact) => {
   try {
     const response = await axios.post("/contacts", newContact);
     return response.data;
@@ -32,4 +32,4 @@ const deleteContact = async (id) => {
   }
 };
 
-export { getAllContacts, createContact, deleteContact };
+export { fetchContacts, addContact, deleteContact };
