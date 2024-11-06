@@ -1,19 +1,21 @@
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 
-import css from "./ContactListItem.module.css";
-import { deleteContact } from "../../store/contacts/contactsSlice";
+import { deleteContactsThunk } from "../../store/contacts/thunk";
+// import { deleteContact } from "../../store/contacts/contactsSlice";
 
-const ContactListItem = ({ id, name, number }) => {
+import css from "./ContactListItem.module.css";
+
+const ContactListItem = ({ id, name, phone }) => {
   const dispatch = useDispatch();
 
   const handleDeleteContact = (contactId) => {
-    dispatch(deleteContact(contactId));
+    dispatch(deleteContactsThunk(contactId));
   };
 
   return (
     <li className={css.item}>
-      {name}: {number}
+      {name}: {phone}
       <button onClick={() => handleDeleteContact(id)}>Delete</button>
     </li>
   );
@@ -22,7 +24,7 @@ const ContactListItem = ({ id, name, number }) => {
 ContactListItem.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
 };
 
 export default ContactListItem;

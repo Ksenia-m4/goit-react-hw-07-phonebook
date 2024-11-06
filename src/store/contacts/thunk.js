@@ -5,25 +5,35 @@ import {
   fetchContacts,
 } from "../../services/ApiContacts";
 
-export const getContactsThunk = createAsyncThunk("contacts/fetchAll", () => {
-  fetchContacts();
-});
+export const getContactsThunk = createAsyncThunk(
+  "contacts/fetchAll",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await fetchContacts();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const createContactsThunk = createAsyncThunk(
   "contacts/addContact",
-  (newContact) => {
-    addContact(newContact);
+  async (newContact) => {
+    try {
+      return await addContact(newContact);
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const deleteContactsThunk = createAsyncThunk(
   "contacts/deleteContact",
-  (id) => {
-    deleteContact(id);
+  async (id) => {
+    try {
+      return await deleteContact(id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
-
-// Объяви следующие операции:
-// fetchContacts - получение массива контактов (метод GET) запросом. Базовый тип экшена "contacts/fetchAll".
-// addContact - добавление контакта (метод POST). Базовый тип экшена "contacts/addContact".
-// deleteContact - удаление контакта (метод DELETE). Базовый тип экшена "contacts/deleteContact".

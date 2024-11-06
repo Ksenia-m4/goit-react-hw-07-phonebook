@@ -1,25 +1,32 @@
-import { useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 import ContactListItem from "../ContactListItem/ContactListItem";
 
+import { getContactsThunk } from "../../store/contacts/thunk";
+
 import css from "./ContactList.module.css";
+import { selectContacts, selectFilter } from "../../store/contacts/selectors";
 
 const ContactList = () => {
-  const contacts = useSelector((state) => state.contacts);
-  const filter = useSelector((state) => state.filter);
+  const { filter } = useSelector(selectFilter);
+  const contacts = useSelector(selectContacts);
+  const dispatch = useDispatch();
 
-  const filteredContacts = useMemo(() => {
-    const normalizedName = filter.toLowerCase();
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(normalizedName)
-    );
-  }, [contacts, filter]);
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
 
-  return (
+  const filteredContacts = contacts.filter((el) =>
+    el.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return filteredContacts.length === 0 ? (
+    <p>There are no contacts</p>
+  ) : (
     <ul className={css.list}>
-      {filteredContacts.map(({ id, name, number }) => (
-        <ContactListItem key={id} id={id} name={name} number={number} />
+      {filteredContacts.map(({ id, name, phone }) => (
+        <ContactListItem key={id} id={id} name={name} phone={phone} />
       ))}
     </ul>
   );
